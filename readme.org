@@ -1,0 +1,72 @@
+
+
+> Ideas do not arrive in the order for which it makes sense to execute them. 
+
+Hello! I am a person. This is a design document regarding a system to take arbitrary files or blobs or stanzas, which we generally call /items/ or /material/, and encourage a user to label them with keywords, to label them with *-keywords, and to work them over, as well as to very lightly track the kinds of working over that they are doing, to collect data on how users have annotated material and how users annotate their time. Eric Drechsel is a person helping me to identify those portions of this imaginary system that might be implementable in JavaScript, a prototypal-inheritance-based language which can run on computers that one is n control of as well as in the virtual machine known as a "browser."
+
+Put simply, this project exists to try and implement the pair of imperatives from Dead Prez in the song "We Want Freedom" (available wherever copies of music are available):
+
+> "Plan your work, work your plan."
+
+The truth in this pair of imperatives is that it is essential to plan work at a high level, and it is essential to apply effort to execute such plans. This system is meant to address that both kinds of thinking are necessary, but no one really knows how to optimize the amount of effort spent on the one, the other, and on neither (i.e., addressing concerns other than some work in question). The system is a bit of a light time tracker, a bit of an organized experience around archival work, and a helpful robotic nag to remind you when it is time to put in just a bit more effort toward publishing rather than theorizing. 
+
+
+
+* The Data Articulation
+
+While I'm a strong advocate for "content before organization," after having thought hard and obsessively about this kind of system for approximately five years running, stopping myself from implementing anything every time for the simple reason taht I could never trust that i was trying to write a "book-writing machine" instead of writing my book---
+
+-- like inventing a typewriter 
+-- Donald Knuth took 10 years to invent LaTeX to not write /his/ book, didn't he? 
+
+Here are the objects and functions I have in mind, from a pretty high level. My goal in describing such high-level concepts before going write to their prototypes is to design a system that can grow. It will grow out of the kinds of prototypes that get built now and later, and how they end up inheriting properties from one another as the system grows. 
+
+
+First, look at this picture: 
+
+In the upper left, a manifold of material and projections of material and unions of material and repetitions of material, an uncountable (by complexity of operation, not by one-to-one correspondence) mess of stuff we've made. 
+
+Among that material, injected into that manifold like little discrete units, are terms. Terms are "little bits of text" and that is deliberately left a little fuzzy. The terms may end up to be titles, they may end up to be lines of dialogue that the material supports or is supported by, they may be keywords, they may even, as in seen in
+-- that one piece by Maciej on Star Trek Slash Fic tag structure, --
+they may have idiosyncratic and text-mineable material internal to their structure. We just don't know. 
+
+What we do know is, we mean them to be things like "Punk Mathematics" or "#pm" or "game theory, information, quantum objects, money". The former is the title of a work, it is special. The successor is a hashtag representing a conversation that is not particularly ongoing, but it can be a handy way to tag the end of a paragraph for being picked up somewhere else, (except that's also kinda an antipattern, because it doesn't help writing flow too much if you are continually breaking flow to categorize). The last is a string of comma-separated keywords, and is meant to bring material together when it is time to process it from some kind of topdown perspective, or it is meant to flag material so that it can be viewed as inputs to a statistic function. 
+
+I got too focused on the gory details of terms. "They're strings with some functions defined on them."
+
+View to the right of the term-injected material manifold. There are topics, and there are concepts. There should also be works, come to think of it. Lemme unpack what those are, and in particular how they are meant to come into being.  
+
+Topics are keywords that describe some material. That's it. They are not controlled vocabularies, they are not paths. The reason that I'm going on about them ad nauseum is that they are the first thing that a professional archivist will suggest for organizing some possibly not-very-well-defined materials. Recall that an archivist may have to preserve sound recordings, or hardcover books, or softcover pornographic paperbacks, or wax sound recordings, or all of the 40,000 pen nibs of some author in particular, or all of the oral histories of the curator of the collection of all of the 40,000 pen nibs of that author. (This is a real case study, see Johanna Drucker speaking on the Internet). But anyway, if an archivist, whose job it is to take an enormous backlog and apply resources to the improved informativeness of that archive without disrupting the way the collection was previously organized (the concept of which is called, respecting the fonds, where fond is /foundation/ in French and I believe some proto-French like Latin?), I lost rack of this sentence but keywords are important. 
+
+It may be more accurate to distinguish between topics and keywords, though, in that a keyword is certainly just one term and it is used in this way, and a topic may be a set of such terms. I'm a little fuzzy on that. 
+
+What I'm not fuzzy on, finally, is what a concept is! A concept is defined through set operations on sets of items of material and of sets of keywords. Take a set of materials (equivalently, a set of keywords). For every item of material (every keyword), take the union of the set of keywords (items) describing (inscribing) it. /Now/, collect all of the items (keywords) that can be described by exactly those topics (items). 
+
+The above may not be describing it very well -- I'm trying to point out that there is a perfect dualism in this operation. It doesn't matter whether you're operating in items or keywords in order to determine topics, but you do have to pick one, and you do have to know which one you picked to break the symmetries in deciding what /represents/ a concept. And also I need to review a Lattice book and a PHD thesis, er, first name was Lieve, to make sure I'm doing it right. But once you do it right, you get concepts and subconcepts, and "is a subconcept of" is a partial order, and therefore you can draw the Hasse diagram of the resulting lattice, and it is something that can be drawn both recursively and computationally.
+
+That leads me to the couple of tiny math ovals on the diagram. I figure there's all kinds of fun formal concept analysis notions that one could do with the system that we end up with. But it will be generally applicable to many lattices. So I've shunted it off into some /lattices/ module for later. 
+
+Similarly, I've put in a bit for rigs. A rig is a ring that lacks negatives. My favorite field is $[0,\infinity)$ inside $\mathbb{Q}$. Let me explain just a little bit of why, without going so far as to imply it needs any implementation attention. The counting numbers are a rig. So if we count up a bunch of items or term occurrences or, well, any ground set at all, like vocabulary words or links or anything, it will be an element of a rig. And, if we keep track of what total we're working with, the total size of the ground set, then taking any filter-by-attribute (either Boolean or Gate, Gate is described below) to get some subset, we can take the latter number over the former number to get an element of positive $\mathbb{Q}$. Which is also a rig. So there's also a kind of "normalization" option that means that you can turn these "for which it's true, false, or gated" / "size of ground set" numeric operations into probabilities from which to create the appearance of choosy behavior. That is, the system becomes capable of handing you something random, or something random within contraints, or something random within constraints with a smaller random chance of breaking that constraint for the purposes of creative disruption. 
+
+But now we're writing a creativity machine, and we should go back to the diagram for something more concrete that we can actually make. 
+
+++
+
+Okay. So we've got some objects representing materials, and they acquire terms in some review process, and we know that we will be able to write many functions to do interesting things with those laboriously produced maps between items and terms. That's at the term level. 
+
+When we go south on the page, we see that there's this undifferentiated mass of material. There are no terms. There's just material. 
+
+file_under is a request for a user to add terms to a thing. this might just be a comma-separated list of terms. the user also has the option, however, to mark some term with an asterisk, like so*. This creates a "*-keyword" or "star-keyword." This means that the user is provisionally declaring that this keyword is of particular interest, and should be treated as though it were the center of a graph that the system ought to be exploring. 
+
+Does the user mean it is a graph to explore provisionally for right now? Does the user mean it is the center of some graph that represents a magnum opus, a master work? Dunno. It's just a way of distinguishing a keyword from other keywords, giving it one "level" of priority above them. "Priority" is not the right word, to be honest; we're trying to give it just a little bit of elevation in some height function, without necessarily trying too hard to define what height function it should be. That way we can "surface" a keyword by noting how hard it struggles to rise above its neighbors. That's the theory, anyway -- giving a graph of associations just a little bit of topography, like a map, like archipelagos of words that rise out of the ocean of material as the user reviews it. 
+
+But it's not all user reviewing and file_under. We want our user to do some work! Work, dammit! Further your goals for crying out loud. So kinda orthogonal to file_under is assignments. A piece of material that has been reviewed enough that it has some keywords, unless we're just getting a random assignment, a sort of freewriting by prompt assignment, it's being brought to the attention of the user because the system things, Hey boss, here's something that you should rework into something or you should delete entirely, leaving only perhaps a narrative or a wisp of data representing the you that you are no longer who reacted to the world in such a way to produce such material. Anyway, an assignment is material presented for working over, instead of presented for filing under. 
+
+I'd like to suggest that when you make an assignment, you should feel free to give it a bunch of field names, in an arbitrary and whimsical way, to try and duplicate the best parts of how authors work in spreadsheets, without giving them the too-strong wiring of a spreadsheet. We would like to produce tables to fill on demand, not freeze things in two-dimensions when it wants to be lively text. (Then again, are we preventing a beautiful aphercotropism from occurring? Gee I hope not. But I think that you'll have a better chance of navigating text through time if it has a bit more flexibility, it is a bit more like a simplicial frame than an always square frame.)
+
+Finally (finally!), tocks. If you see the diagram as representing material-with-terms, an ideal final state of the content, at least before you define more conventional representations (books, websites, comics, musical tracks, audiovisual tracks), in the upper left; a transformation of this to more zero- and one-dimensional keywords and topics and concepts moving right; a transformation of the two-dimensional-and-higher movement of material through annotation and time moving down; then, the tocks are the "more like topics and keywords" equivalent over the difficult time-twisting and recurring material. They are meant to record, "Hey, what are you doing" information. In the ideal labeling (assigning of terms) to a tock, there will be an -ing word or equivalent, representing what, and an arbitrary term representing why. So, "writing, pm" means that when the tock came in, I was writing material for Punk Mathematics. And "sketching, ai" means that I was doing some cartooning ("cartooning" is pretty synomymous with "sketching" in the system, but maybe shouldn't be? finding rough equivalences is part of the partial order goals), and "walking, chill" is when I'm walking not doing much of anything but hanging out with thoughts. Perhaps I should say: Tocks' labels are the keywords of working rather than planning. 
+
+This is getting well over 2000 words so I'm going to try and wind it down by saying that finally, the Object model of JS and the Gates function, which should turn a function that's boolean over an object's properties into a function that is [0,\infinity) or [0, 1), these two are meant to "cone over" the terms-and-material, terms, material, and tocks-terms types. The goal is to turn true/false statements about material and terms and assignments and tocks into probabilities so that we can have a well-mixed system of materials and their negentropic movements. 
+
+OK GO GO GADGET COMPUTER
+
