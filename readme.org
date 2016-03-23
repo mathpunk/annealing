@@ -21,8 +21,8 @@ While I'm a strong advocate for "content before organization," after having thou
 
 Here are the objects and functions I have in mind, from a pretty high level. My goal in describing such high-level concepts before going write to their prototypes is to design a system that can grow. It will grow out of the kinds of prototypes that get built now and later, and how they end up inheriting properties from one another as the system grows. 
 
-[[https://alexandria.pdxhub.org/share/tom/fig1.jpg]]
-
+[[./figures/readme%20fig1.jpg
+]]
 In the upper left, a manifold of material and projections of material and unions of material and repetitions of material, an uncountable (by complexity of operation, not by one-to-one correspondence) mess of stuff we've made. 
 
 Among that material, injected into that manifold like little discrete units, are terms. Terms are "little bits of text" and that is deliberately left a little fuzzy. The terms may end up to be titles, they may end up to be lines of dialogue that the material supports or is supported by, they may be keywords, they may even, as in seen in
