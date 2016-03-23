@@ -21,8 +21,7 @@ While I'm a strong advocate for "content before organization," after having thou
 
 Here are the objects and functions I have in mind, from a pretty high level. My goal in describing such high-level concepts before going write to their prototypes is to design a system that can grow. It will grow out of the kinds of prototypes that get built now and later, and how they end up inheriting properties from one another as the system grows. 
 
-
-First, look at this picture: 
+![figure 1](https://lh3.googleusercontent.com/OpTghHp8XPQ2-vWzZT0cJwkD21xKYn5-pLRy-Iis5GgDIoOFzY7xpL9Q53VX04cgT7x8Q1M9JYcasA=w1472-h1402-no)
 
 In the upper left, a manifold of material and projections of material and unions of material and repetitions of material, an uncountable (by complexity of operation, not by one-to-one correspondence) mess of stuff we've made. 
 
