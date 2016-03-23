@@ -1,0 +1,73 @@
+> As a faking-it user experience designer, I write the things that I think a user experience designer might write. 
+
+** ROLES
+
+   Names for the hats that a user wears. Well, there's "producer," someone who has just created some data and wants to get it off their mind. There's "reviewer," someone who is looking over some data that was produced in the past. There's "worker," someone who is looking for assignments to apply time and effort to. And I suppose there could be a "collaborator," someone who is a different person than the system owner who can also produce, review, or work. 
+   
+** STREAMS
+   Camlistore can import from a variety of sources right? Sources I find interesting include but are not limited to: 
+   
+   - a directory full of "journal" files, using date and time as the simplest metadata.
+   - a stream of photos being backed up by Google Photos
+   - a directory of photos (well, PDFs probably, since getting the stroke data is worthwhile) that I'm sharing from my Bamboo Spark app into Google Drive (since it's the simplest way I've found of doing so). 
+   - tweets
+   - tocks (described in Data Articulation)
+   - Entries from BookCatalogue -- I'm not entirely clear on this but I believe that it is an app that used to be LibraryThing that now is supported by Goodreads.com, an Amazon subsidiary. I've used it to take snapshots of barcodes for ISBNs to get title, author, etc. There are some fields in that app that could be repurposed for keywords.
+   - pins: individual bookmarks from Pinboard.in. Mine come either from favoriting tweets, which (eventually) propagate to Pinboard, or via the mobile app when reading some page (which is nice because I'll usually give such a bookmark a tag or three).  
+
+
+** IMAGINING DOING THINGS 
+
+   - What if, instead of just taking a photo, I could take a photo and add keywords, title, description? 
+   
+   - Given a stream of tweets, a computational agent provisionally guesses their tags based on some kind of word vector model. 
+   
+   - As a reviewer, I choose a number of items that I'd care to review before becoming a worker and receiving an assignment.
+
+   - As a reviewer, I choose a length of time to review items.
+
+   - As a reviewer, I am presented with a random item to review.
+
+   - As a reviewer, I am presented with a random item that satisfies a constraint. An example might be, show me a random item to review, but only of those that are tagged with 'math', either provisionally by an agent or, uh, actually by the user having handled the thing.
+
+   - As a reviewer, decide not to review some item right now. The system adds some little wisp of "handled" metadata, i.e., it notices that a person looked at the datom and tossed it aside.
+
+   - As a worker, get a random assignment.
+
+   - As a reviewer, review a datom and transform it into an assignment -- that is, add a little bit of text that tells the worker what it's supposed to have done to it, and give it keywords. That keyword should really have some *-keyword, because work should be done toward a purpose. 
+
+   - As a reviewer or worker, take a piece of data, and create an assignment shape. For example, sometimes I see a pattern in my writing that I would like to treat as a template to fill in with other examples later. Like, 
+       title: No Negatives
+       explain: Unpack what a rig is.
+       speculate: Having explained how $[0,\infinity)$ connects to both the counting numbers and the rational numbers, and how normalization works, point out that resources that exist (with no debt) surely map weirdly to the actual real numbers, and then 
+       joke: leave them with a joke because how serious could i possibly be idk
+     
+** RIGHT SO ANYWAY
+   I dunno, I see the "object with named attributes" pattern as a way for people to use what's good about spreadsheets for writing -- you can fill in little bits of them, you see that there are blank spaces with names that you are encouraged to fill in if there is an answer. That suggests making little "assignment shapes" out of your data, that could get cloned shapewise but only tentatively datawise later when you're working rather than planning. 
+
+   And then, the "object with named attributes and one of those attributes is keywords" is a way that archivists cope with backlogs without getting overwhelmed and without really doing much to disrupt what organization existed before. So taking messes and applying attention plus keywords is good. The messes might be imported from Camlistore. 
+   
+** Now
+   Make these into issues small enough to mean something in code. 
+
+
+
+
+
+     
+     
+
+   
+
+   
+
+
+
+
+  
+    
+
+
+
+   
+
