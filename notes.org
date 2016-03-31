@@ -138,8 +138,6 @@ but we'll follow the book for now.
 #+BEGIN_SRC js
 app.set('port', process.env.PORT || 3000);
 #+END_SRC
-
-
 *** Routes, errors, and console output
 For the moment I'm going to just follow along with the text and add a home page and an about page. I'll change them for more reasonable route/action names later. 
 
@@ -208,3 +206,7 @@ Hey btw I haven't, like, tested this at all. Let's do that now....
 Yes, the '/' route and the '/about' route and the '/butts' route all return their messages or they 404 respectively. I don't know how to force a server error so I'll take the author's word that the 500 handler is working great.   
 
 
+*** Aside: Is Express Good? 
+Let us pause for a moment and note that there was nothing that we did here that we couldn't have done with node's http module. However, in the example of this (which I copied by hand but did not type or test) we had to use gnarly regexes in order to normalize incoming urls -- dealing with capitals, stripping off whitespaces, and so forth. Gross. This is all being handled by Express's "router" (I have a hunch that's what we got when we did =express()=?). 
+
+Next: Views and templates!
