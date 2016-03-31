@@ -2,7 +2,12 @@ var express = require('express');
 
 var app = express();
 
-// app.port = process.env.PORT || 3000;
+var handlebars = require('express-handlebars').create(
+    { defaultLayout: 'main' }
+); // common, I bet: symbol key, string value
+
+app.engine('handlebars', handlebars.engine); // wtf?
+app.set('view engine', 'handlebars');
 
 app.set('port', process.env.PORT || 3000);
 
@@ -35,6 +40,7 @@ app.use(function(err, req, res, next){
     res.send('500 - Server Error');
 });
 
+// Go ahead, I'm listening
 app.listen(app.get('port'), function(){
     console.log('Express started on http://localhost:'+
                 app.get('port')+

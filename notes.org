@@ -127,7 +127,7 @@ npm install --save express
 
 ** App
 :PROPERTIES:
-:header-args:  :tangle ~/nodes/annealing/site/annealing.js
+:header-args:  :tangle no
 :END:
 
 *** The skeleton
@@ -221,4 +221,79 @@ Yes, the '/' route and the '/about' route and the '/butts' route all return thei
 Let us pause for a moment and note that there was nothing that we did here that we couldn't have done with node's http module. However, in the example of this (which I copied by hand but did not type or test) we had to use gnarly regexes in order to normalize incoming urls -- dealing with capitals, stripping off whitespaces, and so forth. Gross. This is all being handled by Express's "router" (I have a hunch that's what we got when we did =express()=?). 
 
 Next: Views and templates!
-** 
+
+** Looking at Data
+
+(p. 24 in _Node for..._)
+
+*** Setting the templating engine
+
+The author sez, Express uses Jade by default, but Jade is maybe a little too abstract. So he uses handlebars for templating instead. My preference, ultimately, would be to use something like hiccup, but since ClojureScript is not on the menu at this time, I'll go with his recommendation. 
+
+$ npm install --save express-handlebars
+
+Hang on, I think I was screwing something up: the "project root" is the =annealing/site= directory, and that's where our modules should be. I'll just fix that in the shell...
+
+Okay. We need to put these handlebar shenanigans right after the app is created, so the main file should now look like, 
+
+#+BEGIN_SRC js :tangle site/annealing.js
+  var express = require('express');
+
+  var app = express();
+
+  var handlebars = require('express-handlebars').create(
+      { defaultLayout: 'main' }
+  ); // common, I bet: symbol key, string value
+
+  app.engine('handlebars', handlebars.engine); // wtf?
+  app.set('view engine', 'handlebars');
+
+#+END_SRC
+
+All these strings are going to mess me up repeatedly, I'm sure. My hope is that if I think through where things are executing, and when a thing is a name vs when a thing is a thing will help me keep it straight. The port and route and error and console stuff is the same for now. 
+
+#+BEGIN_SRC js :tangle site/annealing.js
+app.set('port', process.env.PORT || 3000);
+
+app.get('/', function(req, res){
+    res.type('text/plain');
+    res.send('Annealing is an app');
+});
+app.get('/', function(req, res){
+    res.type('text/plain');
+    res.send('Annealing is an app');
+});
+app.get('/about', function(req, res){
+    res.type('text/plain');
+    res.send('The theory of annealing');
+    // The content of this page, if you decide to have it, should be an edited version of the /readme.org/ page you wrote like a monkey at a typewriter.
+});
+
+// 404 : Page not found
+app.use(function (req, res) {
+    res.type('text/plain');
+    res.status(404);
+    res.send('404 - Not Found')
+})
+
+// 500 : Server error
+app.use(function(err, req, res, next){
+    console.error(err.stack); // what? I guess we expect the err object to have this attr
+    res.type('text/plain');
+    res.status(500);
+    res.send('500 - Server Error');
+});
+
+// Go ahead, I'm listening
+app.listen(app.get('port'), function(){
+    console.log('Express started on http://localhost:'+
+                app.get('port')+
+                '; press Ctrl-C to terminate.');
+});
+#+END_SRC
+
+
+*** Views & Layouts
+// :PROPERTIES:
+// :header-args:  :tangle ~/nodes/annealing/site/annealing.js
+// :END:
