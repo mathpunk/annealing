@@ -1,0 +1,192 @@
+
+* Retrieving Data
+
+** camget
+
+#+BEGIN_SRC sh :results drawer
+camget sha1-5394306642205eeddac2b485a24ae5dc325923a3
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+{"camliVersion": 1,
+  "camliType": "file",
+  "fileName": "data-waking.gif",
+  "parts": [
+    {
+      "blobRef": "sha1-f80dd7619873c8bddab7c771bec72f89781c7643",
+      "size": 262144
+    },
+    {
+      "blobRef": "sha1-aa396b26d7250165a7e60a771724e41fa619ed8a",
+      "size": 76812
+    },
+    {
+      "blobRef": "sha1-493cf2f502f911dd6d1b9b6eb1e1a1d18067b2e2",
+      "size": 87174
+    },
+    {
+      "blobRef": "sha1-881edd8e34656c70252eb2e003c43ed359ec3f71",
+      "size": 69239
+    },
+    {
+      "blobRef": "sha1-6a5f33664547b128ab8cd3145d476f91e7dbb714",
+      "size": 69873
+    },
+    {
+      "blobRef": "sha1-dff0faae2dfa64e2a502ac6bea64185c49a9243a",
+      "size": 68827
+    },
+    {
+      "blobRef": "sha1-2a48fc81459bae5edeedd33286d93c00e4d45fc2",
+      "size": 66652
+    },
+    {
+      "blobRef": "sha1-82c6e3e12679024bfa1fec1c1242e526fa53813b",
+      "size": 73211
+    },
+    {
+      "bytesRef": "sha1-deb56434896a564e9d40ae7cabafe0b67fc6cdb5",
+      "size": 132586
+    },
+    {
+      "blobRef": "sha1-76bcf539f244aca668e18c7f7dfdae346aa0c78e",
+      "size": 74174
+    },
+    {
+      "blobRef": "sha1-af59e0102b4a4992eb84c85935f608a825753df7",
+      "size": 58026
+    }
+  ],
+  "unixCtime": "2016-03-26T19:41:07.196167749Z",
+  "unixGroup": "root",
+  "unixGroupId": 0,
+  "unixMtime": "2016-03-26T19:37:46.729493759Z",
+  "unixOwner": "dru",
+  "unixOwnerId": 1000,
+  "unixPermission": "0755"
+}
+:END:
+
+But it's suggested that camtool is more what you want to use. 
+
+** camtool
+
+#+BEGIN_SRC sh :results drawer
+jo "camliNodeType"="pinboard.in:post"
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+{"camliNodeType":"pinboard.in:post"}
+:END:
+
+
+#+BEGIN_SRC sh :results drawer
+camtool search '{"camliNodeType":"pinboard.in:post"}'
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+{
+  "blobs": null,
+  "description": null
+}
+:END:
+
+Why? Why doesn't that JSON constraint get me the right thing? 
+
+   
+
+* Interacting with Data: The Site/Server
+
+** Setup
+
+(After _Web Development with Node & Express_)
+
+I'm thinking I should work on the site, so as to get down the routes that I think I need, to create html templates for viewing information, and just write a small bunch of node that isn't haphazardly imagining how to design with prototypal inheritance.  
+
+Make a site dir. 
+#+BEGIN_SRC sh
+mkdir site
+#+END_SRC
+
+Install express.
+#+BEGIN_SRC sh
+npm install --save express
+#+END_SRC
+
+** App
+:PROPERTIES:
+:header-args:  :tangle ~/nodes/annealing/site/annealing.js
+:END:
+
+*** Errors and output
+Now, create an "entry point" file, which the book refers to as the "app file." Bring in the express object from node_modules, and call it with no arguments to make an instance of, uh, whatever an express object is.
+#+BEGIN_SRC js
+  var express = require('express');
+
+  var app = express();
+#+END_SRC
+
+I suspect an alternate way of doing this next bit, setting the port to be either the environment variable of that name or a default, is 
+#+BEGIN_SRC js
+// app.port = process.env.PORT || 3000;
+#+END_SRC
+
+but we'll follow the book for now. 
+#+BEGIN_SRC js
+app.set('port', process.env.PORT || 3000);
+#+END_SRC
+
+Okay! Now let's make some failure mode pages. 
+#+BEGIN_SRC js
+  // 404 : Page not found
+  app.use(function (req, res) {
+      res.type('text/plain');
+      res.status(404);
+      res.send('404 - Not Found')
+  })
+
+  // 500 : Server error
+  app.use(function(err, req, res, next){
+      console.error(err.stack); // what? I guess we expect the err object to have this attr
+      res.type('text/plain');
+      res.status(500);
+      res.send('500 - Server Error');
+  });
+
+#+END_SRC
+
+Notice how the =use= method of the app object appears to be accumulating functions that it will use later. What is not obvious is, is there something inside that object that is dispatching on arity? Like, is there a way that it distinguishes among these anonymous functions in another way than arity? 
+This next line is a little weird. The listener is listening to the instantiation of the =app.get('port')= maybe? 
+
+#+BEGIN_SRC js
+  app.listen(app.get('port'), function(){
+      console.log('Express started on http://localhost:'+
+                  app.get('port')+
+                  '; press Ctrl-C to terminate.');
+  });
+
+#+END_SRC
+
+
+*** Information routes
+For the moment I'm going to just follow along with the text and add a home page and an about page. I'll change them for more reasonable route/action names later. 
+
+#+BEGIN_SRC js
+  app.get('/', function(req, res){
+      res.type('text/plain');
+      res.send('Annealing is an app');
+  });
+  app.get('/', function(req, res){
+      res.type('text/plain');
+      res.send('Annealing is an app');
+  });
+  app.get('/about', function(req, res){
+      res.type('text/plain');
+      res.send('The theory of annealing');
+      // The content of this page, if you decide to have it, should be an edited version of the /readme.org/ page you wrote like a monkey at a typewriter.
+  });
+
+#+END_SRC
