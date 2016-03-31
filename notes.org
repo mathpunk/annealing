@@ -1,7 +1,15 @@
 
-* Retrieving Data
+* Retrieving Data: Camlistore
 
-** camget
+Camlistore eats anything that an importer has been provided for. I would like to learn to:
+- write and then forget importers, e.g., my BookCatalogue/GoodReads data;
+- write classifiers, filters, e.g., go through tweets and word2vec them and act on the results somehow;
+- put & get using hashes, possibly using the hashable objects model from Clojure (I only mean, I'm pretty sure that two data structures representing the same data have the same hash when you ask Clojure about 'em).
+
+** From the command line
+
+
+*** camget
 
 #+BEGIN_SRC sh :results drawer
 camget sha1-5394306642205eeddac2b485a24ae5dc325923a3
@@ -68,10 +76,11 @@ camget sha1-5394306642205eeddac2b485a24ae5dc325923a3
 }
 :END:
 
-But it's suggested that camtool is more what you want to use. 
+But it's suggested that =camtool search= is more what you want to use, because this is low-level. 
 
-** camtool
+*** camtool search
 
+=jo= is a little tool that helps you make JSON objects from the command line, like so:
 #+BEGIN_SRC sh :results drawer
 jo "camliNodeType"="pinboard.in:post"
 #+END_SRC
@@ -81,7 +90,7 @@ jo "camliNodeType"="pinboard.in:post"
 {"camliNodeType":"pinboard.in:post"}
 :END:
 
-
+I use that to get a little bit of well-formed and properly quoted JSON, and...
 #+BEGIN_SRC sh :results drawer
 camtool search '{"camliNodeType":"pinboard.in:post"}'
 #+END_SRC
@@ -94,7 +103,7 @@ camtool search '{"camliNodeType":"pinboard.in:post"}'
 }
 :END:
 
-Why? Why doesn't that JSON constraint get me the right thing? 
+...aaaaand I get a big blob o' nothin'. I dunno why. I made an issue about how we need more examples of =camtool search= being used correctly.
 
    
 
@@ -138,6 +147,8 @@ but we'll follow the book for now.
 #+BEGIN_SRC js
 app.set('port', process.env.PORT || 3000);
 #+END_SRC
+
+
 *** Routes, errors, and console output
 For the moment I'm going to just follow along with the text and add a home page and an about page. I'll change them for more reasonable route/action names later. 
 
@@ -210,3 +221,4 @@ Yes, the '/' route and the '/about' route and the '/butts' route all return thei
 Let us pause for a moment and note that there was nothing that we did here that we couldn't have done with node's http module. However, in the example of this (which I copied by hand but did not type or test) we had to use gnarly regexes in order to normalize incoming urls -- dealing with capitals, stripping off whitespaces, and so forth. Gross. This is all being handled by Express's "router" (I have a hunch that's what we got when we did =express()=?). 
 
 Next: Views and templates!
+** 
