@@ -121,7 +121,7 @@ npm install --save express
 :header-args:  :tangle ~/nodes/annealing/site/annealing.js
 :END:
 
-*** Errors and output
+*** The skeleton
 Now, create an "entry point" file, which the book refers to as the "app file." Bring in the express object from node_modules, and call it with no arguments to make an instance of, uh, whatever an express object is.
 #+BEGIN_SRC js
   var express = require('express');
@@ -139,7 +139,29 @@ but we'll follow the book for now.
 app.set('port', process.env.PORT || 3000);
 #+END_SRC
 
-Okay! Now let's make some failure mode pages. 
+
+*** Routes, errors, and console output
+For the moment I'm going to just follow along with the text and add a home page and an about page. I'll change them for more reasonable route/action names later. 
+
+#+BEGIN_SRC js
+  app.get('/', function(req, res){
+      res.type('text/plain');
+      res.send('Annealing is an app');
+  });
+  app.get('/', function(req, res){
+      res.type('text/plain');
+      res.send('Annealing is an app');
+  });
+  app.get('/about', function(req, res){
+      res.type('text/plain');
+      res.send('The theory of annealing');
+      // The content of this page, if you decide to have it, should be an edited version of the /readme.org/ page you wrote like a monkey at a typewriter.
+  });
+
+#+END_SRC
+
+Now, one commit ago, I had the 404 page before these routes. The book says that you need to have the routes before the 404, so, I'll make that adjustment now. 
+Failure modes:
 #+BEGIN_SRC js
   // 404 : Page not found
   app.use(function (req, res) {
@@ -170,23 +192,19 @@ This next line is a little weird. The listener is listening to the instantiation
 
 #+END_SRC
 
+Does this explanation help? 
 
-*** Information routes
-For the moment I'm going to just follow along with the text and add a home page and an about page. I'll change them for more reasonable route/action names later. 
+#+BEGIN_QUOTE
+Note that our custom 404 and 500 pages must be handled slightly differently. Instead of using =app.get=, it is using =app.use=. =app.use= is the method by which Express adds _middleware_... you can think of this as a catch-all handler for anything that didn't get matched by a route. 
+#+END_QUOTE
 
-#+BEGIN_SRC js
-  app.get('/', function(req, res){
-      res.type('text/plain');
-      res.send('Annealing is an app');
-  });
-  app.get('/', function(req, res){
-      res.type('text/plain');
-      res.send('Annealing is an app');
-  });
-  app.get('/about', function(req, res){
-      res.type('text/plain');
-      res.send('The theory of annealing');
-      // The content of this page, if you decide to have it, should be an edited version of the /readme.org/ page you wrote like a monkey at a typewriter.
-  });
+He goes on to talk about how route ordering matters for Express, and this can lead to shenanigans when you have subpages. 
 
-#+END_SRC
+Hey btw I haven't, like, tested this at all. Let's do that now....
+
+1. Tangle
+2. node site/annealing.js
+
+Yes, the '/' route and the '/about' route and the '/butts' route all return their messages or they 404 respectively. I don't know how to force a server error so I'll take the author's word that the 500 handler is working great.   
+
+

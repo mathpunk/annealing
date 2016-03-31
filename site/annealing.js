@@ -6,6 +6,20 @@ var app = express();
 
 app.set('port', process.env.PORT || 3000);
 
+app.get('/', function(req, res){
+    res.type('text/plain');
+    res.send('Annealing is an app');
+});
+app.get('/', function(req, res){
+    res.type('text/plain');
+    res.send('Annealing is an app');
+});
+app.get('/about', function(req, res){
+    res.type('text/plain');
+    res.send('The theory of annealing');
+    // The content of this page, if you decide to have it, should be an edited version of the /readme.org/ page you wrote like a monkey at a typewriter.
+});
+
 // 404 : Page not found
 app.use(function (req, res) {
     res.type('text/plain');
@@ -25,18 +39,4 @@ app.listen(app.get('port'), function(){
     console.log('Express started on http://localhost:'+
                 app.get('port')+
                 '; press Ctrl-C to terminate.');
-});
-
-app.get('/', function(req, res){
-    res.type('text/plain');
-    res.send('Annealing is an app');
-});
-app.get('/', function(req, res){
-    res.type('text/plain');
-    res.send('Annealing is an app');
-});
-app.get('/about', function(req, res){
-    res.type('text/plain');
-    res.send('The theory of annealing');
-    // The content of this page, if you decide to have it, should be an edited version of the /readme.org/ page you wrote like a monkey at a typewriter.
 });
