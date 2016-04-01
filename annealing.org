@@ -250,8 +250,49 @@ Okay. We need to put these handlebar shenanigans right after the app is created,
 
 #+END_SRC
 
-All these strings are going to mess me up repeatedly, I'm sure. My hope is that if I think through where things are executing, and when a thing is a name vs when a thing is a thing will help me keep it straight. The port and route and error and console stuff is the same for now. 
+All these strings are going to mess me up repeatedly, I'm sure. My hope is that if I think through where things are executing, and when a thing is a name vs when a thing is a thing will help me keep it straight. 
 
+*** Views & Layouts
+
+Create a directory called =views= with a subdirectory called =layouts=. Layouts are a way to provide a common frame of html that you'll use over and over for pages on sites. 
+
+**** Site template
+
+#+BEGIN_SRC html :tangle site/views/layouts/main.handlebars
+  <!doctype html>
+  <html>
+    <head>
+      <title>Annealing</title>
+    <head>
+      <body>
+        {{{body}}}
+      </body>
+  </html>
+
+#+END_SRC
+
+It's this file that the ={defaultLayout: 'main'}= parameter is referring to -- if not otherwise specified, this template will be used for any view. The ={{{body}}}= will be replaced with the html for each view. 
+
+
+**** Page templates
+
+#+BEGIN_SRC html :tangle site/views/home.handlebars
+<h1>now we're cooking with Gibbs free energy</h1>
+#+END_SRC
+
+#+BEGIN_SRC html :tangle site/views/about.handlebars
+<h1>about annealing</h1>
+#+END_SRC
+
+#+BEGIN_SRC html :tangle site/views/404.handlebars
+<h1>404 - Not Found</h1>
+#+END_SRC
+
+#+BEGIN_SRC html :tangle site/views/500.handlebars
+<h1>500 - Server Error</h1>
+#+END_SRC
+
+Now we need to replace our old routes with new ones that use the views. 
 #+BEGIN_SRC js :tangle site/annealing.js
 app.set('port', process.env.PORT || 3000);
 
@@ -291,9 +332,3 @@ app.listen(app.get('port'), function(){
                 '; press Ctrl-C to terminate.');
 });
 #+END_SRC
-
-
-*** Views & Layouts
-// :PROPERTIES:
-// :header-args:  :tangle ~/nodes/annealing/site/annealing.js
-// :END:
